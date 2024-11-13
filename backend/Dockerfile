@@ -1,12 +1,13 @@
-FROM node:18
+FROM node:20.14
  
 WORKDIR /backend
  
-COPY ./backend/package*.json ./
+COPY package*.json ./
 RUN npm install
- 
+
 COPY . .
  
 EXPOSE 3000
  
 CMD ["npm", "start"]
+# CMD [ "tail", "-f", "/dev/null" ]

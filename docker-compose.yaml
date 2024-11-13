@@ -1,12 +1,10 @@
 services:
   backend:
-    build: 
-      dockerfile: ./backend/Dockerfile
+    build: ./backend
     networks:
       - global
   frontend:
-    build: 
-      dockerfile: ./frontend/Dockerfile
+    build: ./frontend
     networks:
       - global
 
