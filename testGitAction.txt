@@ -1,1 +1,3 @@
 test if the git action do not start when i commit withou tag 
+
+test tag in order to pull in docker hub
