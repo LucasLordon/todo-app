@@ -1,0 +1,7 @@
+name: Execute many Smoke Test
+
+on:
+  push:
+    branches: [ "dev", "main" ]
+  pull_request:
+    branches: [ "dev", "main" ]
