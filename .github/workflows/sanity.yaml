@@ -3,14 +3,12 @@ on:
   push:
     branches:
       - main
-    tags:
-      - 'v*.*.*'
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Get Your Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Say Hello to the World
         run: echo "Hello, World!"
