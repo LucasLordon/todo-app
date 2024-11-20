@@ -8,9 +8,9 @@ on:
     #   - 'v*.*.*'
 env:
   REGISTRY: docker.io
-  IMAGE_NAME: ${{ github.event.repository.name }}
-  IMAGE_FRONT_NAME: orask/todo-app-frontend
-  IMAGE_BACK_NAME: orask/todo-app-backend
+  REGISTRY: ${{ vars.REGISTRY }}
+  IMAGE_FRONT_NAME: ${{ vars.IMAGE_FRONT_NAME }}
+  IMAGE_BACK_NAME: ${{ vars.IMAGE_BACK_NAME }}
 
 jobs:
   build_test_publish:
