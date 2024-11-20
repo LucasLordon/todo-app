@@ -9,6 +9,8 @@ on:
 env:
   REGISTRY: docker.io
   IMAGE_NAME: ${{ github.event.repository.name }}
+  IMAGE_FRONT_NAME: todo-app/frontend
+  IMAGE_BACK_NAME: todo-app/backend
 
 jobs:
   build_test_publish:
@@ -48,6 +50,10 @@ jobs:
 
       - name: ls
         run: ls -a
+
+      - name: Debug environment variables
+        run: echo "Registry: ${{ env.REGISTRY }} - Frontend Tag: ${{ env.IMAGE_FRONT_NAME }} - Backend Tag: ${{ env.IMAGE_BACK_NAME }}"
+
 
       - name: Build and push frontend Docker image
         
