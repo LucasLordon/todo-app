@@ -17,9 +17,11 @@ jobs:
       - name: Build the application
         uses: actions/checkout@v4
 
-      - name: Build the Docker image
-        run: docker-compose build --no-cache --force-rm 
+      - name: Install docker-compose
+        run: sudo apt-get update && sudo apt-get install -y docker-compose
 
+      - name: Build the Docker image
+        run: docker compose build --no-cache --force-rm
       - name: Say Hello to the World
         run: echo "Hello, World!"
   test:
