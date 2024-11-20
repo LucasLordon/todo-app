@@ -7,7 +7,6 @@ on:
     # tags:
     #   - 'v*.*.*'
 env:
-  REGISTRY: docker.io
   REGISTRY: ${{ vars.REGISTRY }}
   IMAGE_FRONT_NAME: ${{ vars.IMAGE_FRONT_NAME }}
   IMAGE_BACK_NAME: ${{ vars.IMAGE_BACK_NAME }}
