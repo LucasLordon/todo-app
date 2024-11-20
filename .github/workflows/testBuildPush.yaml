@@ -52,7 +52,7 @@ jobs:
         run: ls -a
 
       - name: Debug environment variables
-        run: echo "Registry: ${{ env.REGISTRY }} - Frontend Tag: ${{ env.IMAGE_FRONT_NAME }} - Backend Tag: ${{ env.IMAGE_BACK_NAME }}"
+        run: echo "Registry ${{ env.REGISTRY }} - Frontend Tag ${{ env.IMAGE_FRONT_NAME }} - Backend Tag ${{ env.IMAGE_BACK_NAME }}"
 
 
       - name: Build and push frontend Docker image
