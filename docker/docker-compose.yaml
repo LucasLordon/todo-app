@@ -1,0 +1,22 @@
+services:
+  backend:
+    build: ../backend
+    ports:
+      - "3000:3000"
+    networks:
+      - global
+    restart: always
+  frontend:
+    build: ../frontend
+    ports:
+      - "5173:5173"
+    networks:
+      - global
+    depends_on:
+      - backend
+    restart: always
+
+
+networks:
+  global:
+    driver: bridge
