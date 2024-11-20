@@ -23,10 +23,10 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y docker-compose
 
       - name: Build, tag frontend Docker image
-        run: docker build-t Orask/todo-app/frontend ./frontend/dockerfile 
+        run: docker build -t Orask/todo-app/frontend ./frontend/dockerfile 
 
       - name: Build, tag backend Docker image
-        run: docker build-t Orask/todo-app/backend ./backend/dockerfile 
+        run: docker build -t Orask/todo-app/backend ./backend/dockerfile 
 
       - name: Test the Docker images
         run: docker compose up -d
