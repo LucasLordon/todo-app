@@ -1,4 +1,4 @@
-name: Build, tag, test and Push Docker Images to DockerHub
+name: Build, tag, test, push Docker Images to DockerHub, and Deploy Frontend to Azure
 on:
   push:
     tags:
@@ -11,7 +11,7 @@ env:
 
 jobs:
   build_test_publish:
-    name: Build and Test
+    name: Build, Test, and Push
     runs-on: ubuntu-latest
 
     steps:
@@ -49,10 +49,6 @@ jobs:
           context: ./frontend
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_NAME }}:latest
-          labels: |
-            org.opencontainers.image.title=${{ env.IMAGE_FRONT_NAME }}
-            org.opencontainers.image.description=Simple Todo application
-            org.opencontainers.image.source=https://github.com/${{ github.repository }}
 
       - name: Build and push latest backend Docker image
         uses: docker/build-push-action@v3
@@ -60,10 +56,6 @@ jobs:
           context: ./backend
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_BACK_NAME }}:latest
-          labels: |
-            org.opencontainers.image.title=${{ env.IMAGE_BACK_NAME }}
-            org.opencontainers.image.description=Simple Todo application
-            org.opencontainers.image.source=https://github.com/${{ github.repository }}
 
       - name: Build and push tags frontend Docker image
         uses: docker/build-push-action@v3
@@ -71,10 +63,6 @@ jobs:
           context: ./frontend
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_NAME }}:${{ env.tag_name }}
-          labels: |
-            org.opencontainers.image.title=${{ env.IMAGE_FRONT_NAME }}
-            org.opencontainers.image.description=Simple Todo application
-            org.opencontainers.image.source=https://github.com/${{ github.repository }}
 
       - name: Build and push tags backend Docker image
         uses: docker/build-push-action@v3
@@ -82,7 +70,16 @@ jobs:
           context: ./backend
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_BACK_NAME }}:${{ env.tag_name }}
-          labels: |
-            org.opencontainers.image.title=${{ env.IMAGE_BACK_NAME }}
-            org.opencontainers.image.description=Simple Todo application
-            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+
+  deploy_frontend_to_azure:
+    name: Deploy Frontend to Azure
+    needs: build_test_publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy frontend to Azure
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'frontend-app-name'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_NAME }}:latest
