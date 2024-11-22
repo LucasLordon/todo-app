@@ -15,9 +15,9 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://backend:3000',
+        target: 'https://backend-staging-gdepbyhsb0bacugq.switzerlandnorth-01.azurewebsites.net',
         changeOrigin: true,
-        secure: false,
+        secure: true,
       }
     }
   },
