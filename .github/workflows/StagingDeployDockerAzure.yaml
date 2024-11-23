@@ -26,7 +26,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y docker-compose
-
+      # test
       # - name: Build and tag frontend Docker image with TARGET
       #   run: |
       #     echo "Building frontend image with target ${TARGET}"
