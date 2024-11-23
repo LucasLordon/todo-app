@@ -1,13 +1,13 @@
 services:
   backend:
-    image: Orask/todo-app/backend
+    image: orask/todo-app/backend
     ports:
       - "3000:3000"
     networks:
       - global
     restart: always
   frontend:
-    image: Orask/todo-app/frontend
+    image: orask/todo-app/frontend
     ports:
       - "5173:5173"
     networks:

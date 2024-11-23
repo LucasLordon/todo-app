@@ -11,13 +11,13 @@ env:
   REGISTRY: ${{ vars.REGISTRY }}
   IMAGE_FRONT_NAME: ${{ vars.IMAGE_FRONT_PRODUCTION_NAME }}
   IMAGE_BACK_NAME: ${{ vars.IMAGE_BACK_PRODUCTION_NAME }}
-
+  IMAGE_FRONT_TAG: ${{ vars.IMAGE_FRONTEND_TAG }}
+  IMAGE_BACK_TAG: ${{ vars.IMAGE_BACKEND_TAG }}
+  
 jobs:
   build_test_publish:
     name: Build, Test, and Push Docker Images
     runs-on: ubuntu-latest
-
-    if: startsWith(github.ref, 'refs/tags/v')
 
     steps:
       - name: Check out the repository
@@ -29,15 +29,15 @@ jobs:
           sudo apt-get install -y docker-compose
 
       - name: Build and tag frontend Docker image
-        run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_NAME }} ./frontend 
+        run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_TAG }} ./frontend 
 
       - name: Build and tag backend Docker image
-        run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_BACK_NAME }} ./backend
+        run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_BACK_TAG }} ./backend
 
       - name: Extract tag from ref
         id: extract_tag
         run: |
-          echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          echo "TAG_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
       - name: Test the Docker images
         run: docker compose up -d
