@@ -27,15 +27,15 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y docker-compose
       # test
-      # - name: Build and tag frontend Docker image with TARGET
-      #   run: |
-      #     echo "Building frontend image with target ${TARGET}"
-      #     docker build \
-      #       --build-arg VITE_TARGET=${TARGET} \
-      #       -t ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_TAG }} ./frontend 
+      - name: Build and tag frontend Docker image with TARGET
+        run: |
+          echo "Building frontend image with target ${TARGET}"
+          docker build \
+            --build-arg VITE_TARGET=${TARGET} \
+            -t ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_TAG }} ./frontend 
 
-      - name: Build and tag frontend Docker image
-        run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_TAG }} ./frontend 
+      # - name: Build and tag frontend Docker image
+      #   run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_TAG }} ./frontend 
 
       - name: Build and tag backend Docker image
         run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_BACK_TAG }} ./backend
