@@ -1,35 +1,43 @@
-name: Build, tag, test, push Docker Images to DockerHub, and Deploy Frontend to Azure
+name: Staging App Deployment, Docker Hub and Azure
+
 on:
   push:
     tags:
       - 'v*.*.*'
+    branches:
+      - dev
 
 env:
   REGISTRY: ${{ vars.REGISTRY }}
-  IMAGE_FRONT_NAME: ${{ vars.IMAGE_FRONT_NAME }}
-  IMAGE_BACK_NAME: ${{ vars.IMAGE_BACK_NAME }}
+  IMAGE_FRONT_NAME: ${{ vars.IMAGE_FRONT_STAGING_NAME }}
+  IMAGE_BACK_NAME: ${{ vars.IMAGE_BACK_STAGING_NAME }}
 
 jobs:
   build_test_publish:
-    name: Build, Test, and Push
+    name: Build, Test, and Push Docker Images
     runs-on: ubuntu-latest
 
+    if: startsWith(github.ref, 'refs/tags/v')
+
     steps:
-      - name: Check out the repo
+      - name: Check out the repository
         uses: actions/checkout@v4
 
       - name: Install docker-compose
-        run: sudo apt-get update && sudo apt-get install -y docker-compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
 
-      - name: Build, tag frontend Docker image
-        run: docker build -t Orask/todo-app/frontend ./frontend 
+      - name: Build and tag frontend Docker image
+        run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_NAME }} ./frontend 
 
-      - name: Build, tag backend Docker image
-        run: docker build -t Orask/todo-app/backend ./backend
+      - name: Build and tag backend Docker image
+        run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_BACK_NAME }} ./backend
 
       - name: Extract tag from ref
         id: extract_tag
-        run: echo "tag_name=${GITHUB_REF##*/}" >> $GITHUB_ENV
+        run: |
+          echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
       - name: Test the Docker images
         run: docker compose up -d
@@ -43,33 +51,37 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push latest frontend Docker image
+      - name: Build and push frontend Docker image (latest)
         uses: docker/build-push-action@v3
         with:
           context: ./frontend
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_NAME }}:latest
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_NAME }}:latest
 
-      - name: Build and push latest backend Docker image
+      - name: Build and push backend Docker image (latest)
         uses: docker/build-push-action@v3
         with:
           context: ./backend
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_BACK_NAME }}:latest
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_BACK_NAME }}:latest
 
-      - name: Build and push tags frontend Docker image
+      - name: Build and push frontend Docker image (with tag)
         uses: docker/build-push-action@v3
         with:
           context: ./frontend
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_NAME }}:${{ env.tag_name }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_NAME }}:${{ env.TAG_NAME }}
 
-      - name: Build and push tags backend Docker image
+      - name: Build and push backend Docker image (with tag)
         uses: docker/build-push-action@v3
         with:
           context: ./backend
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_BACK_NAME }}:${{ env.tag_name }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_BACK_NAME }}:${{ env.TAG_NAME }}
 
   deploy_frontend_to_azure:
     name: Deploy Frontend to Azure
@@ -84,13 +96,13 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Deploy to Azure Web App
-        id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'Frontend-Staging'
           slot-name: 'Production'
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_NAME }}:latest
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_FRONTEND_STAGING }}
+
   deploy_backend_to_azure:
     name: Deploy Backend to Azure
     needs: build_test_publish
@@ -104,7 +116,6 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Deploy Backend to Azure Web App
-        id: deploy-to-webapp-backend
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'Backend-Staging'
