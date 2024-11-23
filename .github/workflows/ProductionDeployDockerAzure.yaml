@@ -37,7 +37,7 @@ jobs:
       - name: Extract tag from ref
         id: extract_tag
         run: |
-          echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          echo "TAG_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
       - name: Test the Docker images
         run: docker compose up -d
