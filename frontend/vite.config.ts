@@ -2,6 +2,8 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
+const target = process.env.TARGET || 'https://backend-staging-gdepbyhsb0bacugq.switzerlandnorth-01.azurewebsites.net';
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -15,7 +17,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://backend-staging-gdepbyhsb0bacugq.switzerlandnorth-01.azurewebsites.net',
+        target: target,
         changeOrigin: true,
         secure: true,
       }
@@ -31,4 +33,4 @@ export default defineConfig({
       },
     },
   },
-})
+});
