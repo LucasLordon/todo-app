@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:local":"TARGET=http://backend:3000 vite",
     "dev:staging": "TARGET=https://backend-staging-gdepbyhsb0bacugq.switzerlandnorth-01.azurewebsites.net vite",
     "dev:production": "TARGET=https://backend-production-cpe6d7a0dzc6cwct.switzerlandnorth-01.azurewebsites.net vite",
     "build": "run-p type-check \"build-only {@}\" --",
