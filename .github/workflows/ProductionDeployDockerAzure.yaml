@@ -34,7 +34,6 @@ jobs:
           npm i
           npm run lint
 
-
   build_test_publish:
     name: Build, Test, and Push Docker Images
     needs: linting_code
@@ -52,10 +51,12 @@ jobs:
 
       - name: Build and tag frontend Docker image with TARGET
         run: |
+          cd ./frontend
+          npm install
           echo "Building frontend image using dev:staging script"
-          npm run dev:production
+          npm run build:production
           docker build \
-            -t ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_TAG }} ./frontend
+            -t ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_TAG }} 
 
       - name: Build and tag backend Docker image
         run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_BACK_TAG }} ./backend
