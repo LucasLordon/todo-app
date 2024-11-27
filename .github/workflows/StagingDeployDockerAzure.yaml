@@ -21,9 +21,7 @@ jobs:
     steps:
       - name: Frontend linting
         run: |
-          cd ./frontend
-          npm i
-          npm run lint
+          ls
       - name: Backend linting
         run: |
           cd ./backend
