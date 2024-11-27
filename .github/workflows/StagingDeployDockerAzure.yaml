@@ -52,7 +52,7 @@ jobs:
           cd ./frontend
           npm install
           echo "Building frontend image using dev:staging script"
-          npm run dev:staging
+          npm run build:staging
           docker build \
             -t ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_TAG }} ./frontend
 
