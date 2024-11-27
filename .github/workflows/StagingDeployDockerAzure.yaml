@@ -19,9 +19,12 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
       - name: Frontend linting
         run: |
-          ls
+          ls -alh
       - name: Backend linting
         run: |
           cd ./backend
@@ -30,12 +33,10 @@ jobs:
 
   build_test_publish:
     name: Build, Test, and Push Docker Images
+    needs: linting_code
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out the repository
-        uses: actions/checkout@v4
-
       - name: Install docker-compose
         run: |
           sudo apt-get update
