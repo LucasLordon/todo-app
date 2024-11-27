@@ -54,7 +54,7 @@ jobs:
           echo "Building frontend image using dev:staging script"
           npm run build:staging
           docker build \
-            -t ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_TAG }} ./frontend
+            -t ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_TAG }} .
 
       - name: Build and tag backend Docker image
         run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_BACK_TAG }} ./backend
