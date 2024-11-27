@@ -14,6 +14,22 @@ env:
   TARGET: "https://backend-staging-gdepbyhsb0bacugq.switzerlandnorth-01.azurewebsites.net"
 
 jobs:
+  linting_code:
+    name: Lint the code
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Frontend linting
+        run: |
+          cd frontend
+          npm i
+          npm run lint
+      - name: Backend linting
+        run: |
+          cd frontend
+          npm i
+          npm run lint
+
   build_test_publish:
     name: Build, Test, and Push Docker Images
     runs-on: ubuntu-latest
