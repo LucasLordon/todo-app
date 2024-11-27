@@ -24,7 +24,9 @@ jobs:
 
       - name: Frontend linting
         run: |
-          ls -alh
+          cd ./frontend
+          npm i
+          npm run lint
       - name: Backend linting
         run: |
           cd ./backend
