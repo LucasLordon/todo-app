@@ -20,22 +20,27 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
       - name: Frontend linting
         run: |
-          cd frontend
+          cd ./frontend
           npm i
           npm run lint
       - name: Backend linting
         run: |
-          cd frontend
+          cd ./backend
           npm i
           npm run lint
 
   build_test_publish:
     name: Build, Test, and Push Docker Images
+    needs: linting_code
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Check out the repository
         uses: actions/checkout@v4
 
