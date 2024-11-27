@@ -46,6 +46,8 @@ jobs:
 
       - name: Build and tag frontend Docker image with TARGET
         run: |
+          cd ./frontend
+          npm install
           echo "Building frontend image using dev:staging script"
           npm run dev:staging
           docker build \
