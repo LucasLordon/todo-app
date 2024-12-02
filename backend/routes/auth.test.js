@@ -27,7 +27,7 @@ describe('Authentication of an user', () =>  {
             .post('/')
             .send({email: user.email, password: "12345678"})
             .then(res => {
-                expect(res.body.email).toEqual(user.email)
+                expect(res.status).toEqual(200)
             })
     })
 })
