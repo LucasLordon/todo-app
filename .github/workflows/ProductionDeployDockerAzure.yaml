@@ -15,11 +15,32 @@ env:
   IMAGE_BACK_TAG: ${{ vars.IMAGE_BACKEND_TAG }}
   
 jobs:
+  linting_code:
+    name: Lint the code
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Frontend linting
+        run: |
+          cd ./frontend
+          npm i
+          npm run lint
+      - name: Backend linting
+        run: |
+          cd ./backend
+          npm i
+          npm run lint
+
   build_test_publish:
     name: Build, Test, and Push Docker Images
+    needs: linting_code
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Check out the repository
         uses: actions/checkout@v4
 
@@ -28,8 +49,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y docker-compose
 
-      - name: Build and tag frontend Docker image
-        run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_TAG }} ./frontend 
+      - name: Build and tag frontend Docker image with TARGET
+        run: |
+          cd ./frontend
+          npm install
+          echo "Building frontend image using dev:staging script"
+          npm run build:production
+          docker build \
+            -t ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_TAG }} 
 
       - name: Build and tag backend Docker image
         run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_BACK_TAG }} ./backend

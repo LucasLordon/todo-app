@@ -2,7 +2,7 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-const target = process.env.TARGET || 'https://backend-staging-gdepbyhsb0bacugq.switzerlandnorth-01.azurewebsites.net';
+const target = process.env.TARGET || 'backend-production-cpe6d7a0dzc6cwct.switzerlandnorth-01.azurewebsites.net';
 
 // https://vite.dev/config/
 export default defineConfig({
