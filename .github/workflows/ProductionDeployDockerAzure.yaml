@@ -13,6 +13,7 @@ env:
   IMAGE_BACK_NAME: ${{ vars.IMAGE_BACK_PRODUCTION_NAME }}
   IMAGE_FRONT_TAG: ${{ vars.IMAGE_FRONTEND_TAG }}
   IMAGE_BACK_TAG: ${{ vars.IMAGE_BACKEND_TAG }}
+  TARGET: "backend-production-cpe6d7a0dzc6cwct.switzerlandnorth-01.azurewebsites.net"
   
 jobs:
   linting_code:
@@ -53,7 +54,7 @@ jobs:
         run: |
           cd ./frontend
           npm install
-          echo "Building frontend image using dev:staging script"
+          echo "Building frontend image using dev:production script"
           npm run build:production
           docker build \
             -t ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT_TAG }} 

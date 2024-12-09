@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:local": "cross-env TARGET=http://backend:3000 vite",
+    "dev:local": "cross-env TARGET=http://127.0.0.1:3000 vite",
+    "dev:docker": "cross-env TARGET=http://backend:3000 vite",
     "dev:staging": "cross-env TARGET=https://backend-staging-gdepbyhsb0bacugq.switzerlandnorth-01.azurewebsites.net vite",
     "dev:production": "cross-env TARGET=https://backend-production-cpe6d7a0dzc6cwct.switzerlandnorth-01.azurewebsites.net vite",
     "build": "run-p type-check \"build-only {@}\" --",
