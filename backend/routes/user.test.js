@@ -33,7 +33,7 @@ describe('Manage an user', () => {
                 expect(res.body).toEqual("Un compte avec cet email exist déjà!")
             })
     })
-    // TODO (not working)
+
     it('should delete an user', async () => {
         const user = new UserModel({
             email: "hello@world.ch",
@@ -47,10 +47,32 @@ describe('Manage an user', () => {
             algorithm: 'RS256',
         });
         request(app)
-            .post('/delete')
+            .delete('/delete')
             .set('Accept-Language', 'en')
             .set('Cookie', ["token=" + token])
             .expect(200)
     })
 
+    it('should edit an user', async () => {
+        const user = new UserModel({
+            email: "hello2@world.ch",
+            password: await bcrypt.hash("123", 8),
+        });
+        await user.save()
+
+        const token = jsonwebtoken.sign({}, key, {
+            subject: user._id.toString(),
+            expiresIn: 60 * 60 * 24 * 30 * 6,
+            algorithm: 'RS256',
+        });
+
+        request(app)
+            .patch('/edit')
+            .set('Accept-Language', 'en')
+            .set('Cookie', ["token=" + token])
+            .send({name: "testname", address: "ahahahaha", zip: "123", location: "dad"})
+            .then(() => {
+                expect(user._id).toBe(1)
+            })
+    })
 })
