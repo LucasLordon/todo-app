@@ -7,6 +7,11 @@ services:
       - global
     restart: always
   frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        APP_ENV: ${APP_ENV:-docker}
     image: orask/todo-app/frontend
     ports:
       - "5173:5173"
@@ -20,3 +25,8 @@ services:
 networks:
   global:
     driver: bridge
+
+# Command line to execute :
+# $env:APP_ENV=environment_that_you_want docker-compose up --build (PowerShell (windows))
+# set APP_ENV=environment_that_you_want && docker-compose up --build (CMD)
+# APP_ENV=environment_that_you_want docker-compose up --build (UNIX)
