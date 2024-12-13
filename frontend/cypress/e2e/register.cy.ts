@@ -9,9 +9,8 @@ describe('Register', () => {
 
     cy.get('input[name="confirmation"]')
       .type('12345678')
-
-
-    cy.get('button[type="submit"]').click();
+ 
+    cy.get('button[type="submit"]').click()
 
     cy.url().should('eq', 'http://localhost:5173/login')
   })
