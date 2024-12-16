@@ -84,7 +84,6 @@ describe('Manage a todo', () => {
         expect(res.status).toEqual(200)
       })
 
-    let todos;
     // Finds
     request(app)
       .get('/')
@@ -101,4 +100,3 @@ describe('Manage a todo', () => {
       })
   })
 })
-
